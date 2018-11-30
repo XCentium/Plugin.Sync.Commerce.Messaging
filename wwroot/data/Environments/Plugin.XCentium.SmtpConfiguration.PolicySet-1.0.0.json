@@ -1,0 +1,22 @@
+﻿{
+  "$type": "Sitecore.Commerce.Core.PolicySet, Sitecore.Commerce.Core",
+  "Id": "Entity-PolicySet-SmtpConfigurationPolicyPolicySet",
+  "Version": 1,
+  "IsPersisted": false,
+  "Name": "SmtpConfigurationPolicyPolicySet",
+  "Policies": {
+    "$type": "System.Collections.Generic.List`1[[Sitecore.Commerce.Core.Policy, Sitecore.Commerce.Core]], mscorlib",
+    "$values": [
+      {
+        "$type": "XCentium.Sitecore.Commerce.Messages.Policies.SmtpConfigurationPolicy, XCentium.Sitecore.Commerce.Messages",
+        "FromEmailAddress": "test@gmail.com",
+        "FromEmailDisplayName": "Test User",
+        "UserName": "testuser",
+        "Password": "testpassword",
+        "Host": "smtp.test.com",
+        "Port": 557,
+        "EnableSsl": false
+      }
+    ]
+  }
+}

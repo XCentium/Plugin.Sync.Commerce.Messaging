@@ -1,0 +1,18 @@
+﻿{
+  "$type": "Sitecore.Commerce.Core.PolicySet, Sitecore.Commerce.Core",
+  "Id": "Entity-PolicySet-SmsTwilioConfigurationPolicy",
+  "Version": 1,
+  "IsPersisted": false,
+  "Name": "SmsTwilioConfigurationPolicy",
+  "Policies": {
+    "$type": "System.Collections.Generic.List`1[[Sitecore.Commerce.Core.Policy, Sitecore.Commerce.Core]], mscorlib",
+    "$values": [
+      {
+        "$type": "XCentium.Sitecore.Commerce.Messages.Policies.SmsTwilioConfigurationPolicy, XCentium.Sitecore.Commerce.Messages",
+        "AccountSid": "AC9eb6ca9426e52eae65a66e87deb18a73",
+        "AuthToken": "8391ac9918c4694080c92f0c559622d2",
+        "FromPhone": "+12063094996"
+      }
+    ]
+  }
+}

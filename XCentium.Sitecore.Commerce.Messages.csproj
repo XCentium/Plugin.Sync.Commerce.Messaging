@@ -1,0 +1,51 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <Description>Sitecore Commerce Plugin Sample Class Library</Description>
+    <Copyright>Â© 2017 Sitecore Corporation A/S. All rights reserved. SitecoreÂ® is a registered trademark of Sitecore Corporation A/S.</Copyright>
+    <VersionPrefix>0.0.1</VersionPrefix>
+    <Authors>Sitecore</Authors>
+    <TargetFramework>net462</TargetFramework>
+    <AssemblyName>XCentium.Sitecore.Commerce.Messages</AssemblyName>
+    <PackageId>Plugin.Vista.OrderStatusMinion</PackageId>
+    <PackageTags>Sitecore;Commerce;Plugin;</PackageTags>
+    <PackageReleaseNotes>release notes</PackageReleaseNotes>
+    <PackageIconUrl>http://www.sitecore.net/favicon.ico</PackageIconUrl>
+    <PackageProjectUrl>http://www.sitecore.net/</PackageProjectUrl>
+    <PackageLicenseUrl>http://www.sitecore.net/platform/pricing.aspx</PackageLicenseUrl>
+    <GenerateAssemblyTitleAttribute>false</GenerateAssemblyTitleAttribute>
+    <RootNamespace>XCentium.Sitecore.Commerce.Messages</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="RazorLight" Version="2.0.0-beta1" />
+    <PackageReference Include="Sitecore.Commerce.Core" Version="2.2.29" />
+    <PackageReference Include="Sitecore.Commerce.Plugin.Catalog" Version="2.2.46" />
+    <PackageReference Include="Sitecore.Commerce.Plugin.Management" Version="2.2.9" />
+    <PackageReference Include="Sitecore.Commerce.Plugin.Orders" Version="2.2.22" />
+    <PackageReference Include="Sitecore.Framework.Configuration" Version="5.0.0" />
+    <PackageReference Include="Twilio" Version="5.22.0" />
+  </ItemGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+  </PropertyGroup>
+
+  <ItemGroup Condition=" '$(Configuration)' == 'Release' ">
+    <Compile Include="..\Shared\VersionInfo.cs" Exclude="bin\**;obj\**;**\*.xproj;packages\**" />
+  </ItemGroup>
+
+  <ItemGroup Condition=" '$(TargetFramework)' == 'net461' ">
+    <Reference Include="System" />
+    <Reference Include="Microsoft.CSharp" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwroot\data\Environments\" />
+  </ItemGroup>
+
+</Project>

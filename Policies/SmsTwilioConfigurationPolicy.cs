@@ -11,8 +11,19 @@ namespace XCentium.Sitecore.Commerce.Messages.Policies
         {
         }
 
+        /// <summary>
+        /// Twilio Account SID (user name)
+        /// </summary>
         public string AccountSid { get; set; }
+
+        /// <summary>
+        /// Twilio Authentication token (password)
+        /// </summary>
         public string AuthToken { get; set; }
+
+        /// <summary>
+        /// From phone number to apply on outgoing text messages
+        /// </summary>
         public string FromPhone { get; set; }
     }
 }

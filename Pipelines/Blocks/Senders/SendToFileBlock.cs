@@ -28,14 +28,14 @@ namespace XCentium.Sitecore.Commerce.Messages.Pipelines.Blocks
                 if (sendToFileConfigurationPolicy == null)
                 {
                     throw new ArgumentException("SendToFileConfigurationPolicy was not found");
-                } 
+                }
 
                 var folderPath = sendToFileConfigurationPolicy.FolderPath;
                 if (string.IsNullOrEmpty(folderPath))
                 {
                     folderPath = Environment.CurrentDirectory;
                 }
-                var fileName = $"{sendToFileConfigurationPolicy.FileNamePrefix}{Guid.NewGuid()}{sendToFileConfigurationPolicy.FileNameSuffix}.{sendToFileConfigurationPolicy.FileExtension}"
+                var fileName = $"{sendToFileConfigurationPolicy.FileNamePrefix}{Guid.NewGuid()}{sendToFileConfigurationPolicy.FileNameSuffix}.{sendToFileConfigurationPolicy.FileExtension}";
                 using (StreamWriter outputFile = new StreamWriter(Path.Combine(folderPath, fileName)))
                 {
                     foreach (var property in message.Properties)

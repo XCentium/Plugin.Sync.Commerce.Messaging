@@ -3,6 +3,7 @@ using Sitecore.Commerce.Core;
 using System;
 using System.IO;
 using System.Threading.Tasks;
+using XCentium.Sitecore.Commerce.Messages.Policies;
 
 namespace XCentium.Sitecore.Commerce.Messages.Pipelines.Blocks
 {
@@ -23,7 +24,19 @@ namespace XCentium.Sitecore.Commerce.Messages.Pipelines.Blocks
                     throw new ArgumentException($"No data to write to file");
                 }
 
-                using (StreamWriter outputFile = new StreamWriter(Path.Combine(Environment.CurrentDirectory, $"{Guid.NewGuid()}.txt")))
+                var sendToFileConfigurationPolicy = context.GetPolicy<SendToFileConfigurationPolicy>();
+                if (sendToFileConfigurationPolicy == null)
+                {
+                    throw new ArgumentException("SendToFileConfigurationPolicy was not found");
+                } 
+
+                var folderPath = sendToFileConfigurationPolicy.FolderPath;
+                if (string.IsNullOrEmpty(folderPath))
+                {
+                    folderPath = Environment.CurrentDirectory;
+                }
+                var fileName = $"{sendToFileConfigurationPolicy.FileNamePrefix}{Guid.NewGuid()}{sendToFileConfigurationPolicy.FileNameSuffix}.{sendToFileConfigurationPolicy.FileExtension}"
+                using (StreamWriter outputFile = new StreamWriter(Path.Combine(folderPath, fileName)))
                 {
                     foreach (var property in message.Properties)
                     {

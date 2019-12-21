@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace XCentium.Sitecore.Commerce.Messages
+namespace Plugin.Sync.Commerce.Messaging
 {
     public static class Constants
     {

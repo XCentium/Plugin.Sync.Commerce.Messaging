@@ -7,7 +7,6 @@
     <Authors>Sitecore</Authors>
     <TargetFramework>net471</TargetFramework>
     <AssemblyName>Plugin.Sync.Commerce.Messaging</AssemblyName>
-    <PackageId>Plugin.Vista.OrderStatusMinion</PackageId>
     <PackageTags>Sitecore;Commerce;Plugin;</PackageTags>
     <PackageReleaseNotes>release notes</PackageReleaseNotes>
     <PackageIconUrl>http://www.sitecore.net/favicon.ico</PackageIconUrl>
@@ -21,7 +20,6 @@
     <PackageReference Include="RazorLight" Version="2.0.0-beta1" />
     <PackageReference Include="Sitecore.Commerce.Core" Version="4.0.72" />
     <PackageReference Include="Sitecore.Commerce.Plugin.Catalog" Version="4.0.61" />
-    <PackageReference Include="Sitecore.Commerce.Plugin.Management" Version="2.2.9" />
     <PackageReference Include="Sitecore.Commerce.Plugin.Orders" Version="4.0.27" />
     <PackageReference Include="Sitecore.Framework.Configuration" Version="5.3.0" />
     <PackageReference Include="Twilio" Version="5.37.1" />
@@ -45,6 +43,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Shared\" />
     <Folder Include="wwroot\data\Environments\" />
   </ItemGroup>
 

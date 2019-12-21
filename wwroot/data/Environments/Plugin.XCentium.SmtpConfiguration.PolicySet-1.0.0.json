@@ -8,7 +8,7 @@
     "$type": "System.Collections.Generic.List`1[[Sitecore.Commerce.Core.Policy, Sitecore.Commerce.Core]], mscorlib",
     "$values": [
       {
-        "$type": "XCentium.Sitecore.Commerce.Messages.Policies.SmtpConfigurationPolicy, XCentium.Sitecore.Commerce.Messages",
+        "$type": "Plugin.Sync.Commerce.Messaging.Policies.SmtpConfigurationPolicy, Plugin.Sync.Commerce.Messaging",
         "FromEmailAddress": "test@gmail.com",
         "FromEmailDisplayName": "Test User",
         "UserName": "testuser",

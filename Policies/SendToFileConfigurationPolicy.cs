@@ -1,9 +1,9 @@
 ﻿using Sitecore.Commerce.Core;
 
-namespace XCentium.Sitecore.Commerce.Messages.Policies
+namespace Plugin.Sync.Commerce.Messaging.Policies
 {
     /// <summary>
-    /// Configuration policy for XCentium.Sitecore.Commerce.Messages.Pipelines.Blocks.SendToFileBlock
+    /// Configuration policy for Plugin.Sync.Commerce.Messaging.Pipelines.Blocks.SendToFileBlock
     /// </summary>
     public class SendToFileConfigurationPolicy : Policy
     {

@@ -1,6 +1,6 @@
 ﻿using Sitecore.Commerce.Core;
 
-namespace XCentium.Sitecore.Commerce.Messages.Policies
+namespace Plugin.Sync.Commerce.Messaging.Policies
 {
     /// <summary>
     /// SMTP Server configuration

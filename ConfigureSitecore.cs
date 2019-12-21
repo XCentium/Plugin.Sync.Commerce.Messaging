@@ -1,20 +1,13 @@
-﻿using System.Reflection;
-using Microsoft.Extensions.DependencyInjection;
+﻿using Microsoft.Extensions.DependencyInjection;
+using Plugin.Sync.Commerce.Messaging.Pipelines;
+using Plugin.Sync.Commerce.Messaging.Pipelines.Blocks;
 using Sitecore.Commerce.Core;
 using Sitecore.Framework.Configuration;
 using Sitecore.Framework.Pipelines.Definitions.Extensions;
-using Pipelines;
-using XCentium.Sitecore.Commerce.Messages.Pipelines;
-using XCentium.Sitecore.Commerce.Messages.Pipelines.Blocks;
-using System;
-using Sitecore.Commerce.Plugin.Orders;
-using XCentium.Sitecore.Commerce.Messages.Shared;
-using XCentium.Sitecore.Commerce.Messages.Pipelines.Blocks.Renderers;
-using XCentium.Sitecore.Commerce.Messages.Pipelines.Blocks.Templates;
-
-namespace XCentium.Sitecore.Commerce.Messages
+using System.Reflection;
+namespace Plugin.Sync.Commerce.Messaging
 {
-    
+
 
     /// <summary>
     /// The carts configure sitecore class.
@@ -31,46 +24,23 @@ namespace XCentium.Sitecore.Commerce.Messages
         {
             var assembly = Assembly.GetExecutingAssembly();
             services.RegisterAllPipelineBlocks(assembly);
-            //services.Sitecore().Pipelines(config => config
-            // .AddPipeline<IExportOrdersMinionPipeline, ProcessOrderStatusPipeline>(
-            //        configure =>
-            //            {
-            //                configure.Add<OrderEmailNotificationBlock>("TestName");
-            //            })
-            //);
 
             services.Sitecore().Pipelines(config => config
-                .ConfigurePipeline<IGetOrderPipeline>(builder => builder
-                    .Add<GetTemplateFromSitecoreBlock>((e) =>
-                    {
-                        e.MessageName = "TestMessage";
-                        e.TemplateId = "{1B324C4C-976B-444E-AB67-D41ED60663A0}";
-                    })
-                    .Add<GetEmailRecipientsBlock>((e) =>
-                    {
-                        e.MessageName = "TestMessage";
-                    })
-                    .Add<GetSmsRecipientsBlock>((e) =>
-                    {
-                        e.MessageName = "TestMessage";
-                    })
-                    .Add<RenderMessageWithRazorBlock>((e) =>
-                    {
-                        e.MessageName = "TestMessage";
-                    })
-                    .Add<SendEmailBlock>((e) =>
-                    {
-                        e.MessageName = "TestMessage";
-                    })
-                    .Add<SendSmsBlock>((e) =>
-                    {
-                        e.MessageName = "TestMessage";
-                    })
-                    .Add<SendToFileBlock>((e) =>
-                    {
-                        e.MessageName = "TestMessage";
-                    })
-                    ));
+                .ConfigurePipeline<IConfigureServiceApiPipeline>(configure => configure.Add<ConfigureServiceApiBlock>())
+                    .AddPipeline<ISendEmailMessagePipeline, SendEmailMessagePipeline>(
+                        configure =>
+                        {
+                            configure.Add<SendEmailBlock>();
+                        })
+                    .AddPipeline<ISendSmsMessagePipeline, SendSmsMessagePipeline>(
+                        configure =>
+                        {
+                            configure.Add<SendSmsBlock>();
+                        }));
+
+            services.RegisterAllCommands(assembly);
+
+            
 
             services.RegisterAllCommands(assembly);
         }

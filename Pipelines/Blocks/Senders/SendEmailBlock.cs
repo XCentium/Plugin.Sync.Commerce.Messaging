@@ -1,38 +1,33 @@
-﻿using Serilog;
+﻿using Plugin.Sync.Commerce.Messaging.Models;
+using Plugin.Sync.Commerce.Messaging.Pipelines.Arguments;
+using Plugin.Sync.Commerce.Messaging.Policies;
+using Serilog;
 using Sitecore.Commerce.Core;
-using Sitecore.Commerce.Plugin.Management;
+using Sitecore.Framework.Conditions;
 using Sitecore.Framework.Pipelines;
 using System;
 using System.Net;
 using System.Net.Mail;
 using System.Threading.Tasks;
-using XCentium.Sitecore.Commerce.Messages.Policies;
-using XCentium.Sitecore.Commerce.Messages.Shared;
 
-namespace XCentium.Sitecore.Commerce.Messages.Pipelines.Blocks
+namespace Plugin.Sync.Commerce.Messaging.Pipelines.Blocks
 {
     /// <summary>
     /// Sends email via SMTP host
     /// </summary>
-    public class SendEmailBlock : PipelineMessageBlockBase
+    public class SendEmailBlock : PipelineBlock<SendEmailArgument, SendMessageResult, CommercePipelineExecutionContext>
     {
-#pragma warning disable 1998
-        public override async Task<CommerceEntity> Run(CommerceEntity entity, CommercePipelineExecutionContext context)
+        public override async Task<SendMessageResult> Run(SendEmailArgument arg, CommercePipelineExecutionContext context)
         {
+            Condition.Requires(arg, "SendEmailArgument is required").IsNotNull();
+            Condition.Requires(arg.MailMessage, "SendEmailArgument.MailMessage is required").IsNotNull();
+            Condition.Requires(arg.MailMessage.From, "SendEmailArgument.MailMessage.From is required").IsNotNull();
+            Condition.Requires(arg.MailMessage.To, "SendEmailArgument.MailMessage.To is required").IsNotNull();
+            Condition.Requires(arg.MailMessage.Subject, "SendEmailArgument.MailMessage.Subject is required").IsNotNull();
+            Condition.Requires(arg.MailMessage.Body, "SendEmailArgument.MailMessage.Body is required").IsNotNull();
+
             try
             {
-                var message = GetMessage(context);
-
-                if (!message.ContainsProperty(Constants.Keys.Subject) || string.IsNullOrEmpty(message.GetPropertyValue(Constants.Keys.Subject) as string))
-                {
-                    throw new ArgumentNullException("Email Subject value not found in Email Tempalte configuration item in Sitecore");
-                }
-
-                if (!message.ContainsProperty(Constants.Keys.Body) || string.IsNullOrEmpty(message.GetPropertyValue(Constants.Keys.Body) as string))
-                {
-                    throw new ArgumentNullException("Email Body value not found in Email Tempalte configuration item in Sitecore");
-                }
-
                 var smtpServerPolicy = context.GetPolicy<SmtpConfigurationPolicy>();
                 var smtpClient = new SmtpClient
                 {
@@ -42,26 +37,31 @@ namespace XCentium.Sitecore.Commerce.Messages.Pipelines.Blocks
                     Credentials = new NetworkCredential(smtpServerPolicy.UserName, smtpServerPolicy.Password)
                 };
 
-                var recipient = GetRecipient(context);
-                var fromAddress = string.IsNullOrEmpty(smtpServerPolicy.FromEmailDisplayName) ? new MailAddress(smtpServerPolicy.FromEmailAddress) : new MailAddress(smtpServerPolicy.FromEmailAddress, smtpServerPolicy.FromEmailDisplayName);
-                var toAddress = new MailAddress((string)recipient.GetPropertyValue(Constants.Keys.To));
-
-                using (var mailMessage  = new MailMessage(fromAddress, toAddress)
+                await smtpClient.SendMailAsync(arg.MailMessage);
+                return new SendMessageResult
                 {
-                    Subject = message.GetPropertyValue(Constants.Keys.Subject) as string,
-                    Body = message.GetPropertyValue(Constants.Keys.Body) as string
-                })
+                    Success = true
+                };
+            }
+            catch (SmtpFailedRecipientException ex)
+            {
+                return new SendMessageResult
                 {
-                    await smtpClient.SendMailAsync(mailMessage);
-                }
+                    ErrorCode = (int)ex.StatusCode,
+                    ErrorMessage = ex.Message,
+                    Success = false
+                };
             }
             catch (Exception ex)
             {
-                Log.Error(ex, $"Error in SendEmailBlock. Message ID: {this.MessageName}, Entity ID: {entity?.Id}");
+                Log.Error(ex, $"Error sending MailMessage: Error: {ex.Message}");
+                return new SendMessageResult
+                {
+                    ErrorCode = -1,
+                    ErrorMessage = ex.Message,
+                    Success = false
+                };
             }
-
-            return entity;
         }
-#pragma warning restore 1998
     }
 }
